@@ -1,0 +1,101 @@
+<launch>   
+    <param name="agvId" value="$(env agvId)"/>
+    <param name="version" value="V20230817.1"/>
+    <!-- 新加四周线激光雷达代码 --> 
+    <arg name="sim_flag" value="false"/>
+    
+    <rosparam if="$(arg sim_flag)" file="$(env HOME)/ROS_Programing/byc2.2_ws/config/$(env agvId).yaml" command="load"/> -->
+    <rosparam unless="$(arg sim_flag)" file="$(env HOME)/byc2.2_ws/config/$(env agvId).yaml" command="load"/>
+
+    <!-- 数据通讯部分 -->
+    <!-- iot与调度软件通讯 -->
+    <!-- <include file="$(find mqtt_comm)/launch/run_test.launch"/> -->
+    <include file="$(find mqtt_comm)/launch/run_iot.launch"/>
+
+    <!-- can与车底盘PLC通讯 -->
+    <node pkg="data_comm" name="can_comm" type="can_comm"/>
+
+    <!-- 规划与控制部分-->
+    <!-- 局部路径规划 -->
+    <node pkg="global_plan_sim" type="local_path_plan" name="local_path_plan" output="screen">
+        <param name="lidar_location_enable" value="true"/>
+        <param name="laserscan_location_enable" value ="false"/>
+    </node>
+    <!-- 路径跟踪控制 -->
+    <node pkg="pathtrack" type="pathtrack" name="pathtrack" output="screen">
+        <param name="run_enable" value="true"/>
+        <param name="mqtt_stop_enable" value="false"/>
+        <param name="obs_stop_enable" value="true"/>
+        <param name="traffic_stop_enable" value="true"/>
+        <param name="test_speed" value="0.0"/>
+        <param name="turn_speed_max" value="0.3"/>       
+    </node>
+    <!-- 转台控制 -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="baselink_turntable" args="1.346 0.0 2.41 0 0 0 base_link turntable_base"/>
+    <include file="$(find turntable)/launch/run.launch"/>
+    <!-- 夹爪作业控制 -->
+    <node pkg="pawcontrol" type="pawcontrol" name="pawcontrol" output="screen">
+        <param name="front_wheel_stop_distance" value="0.04" /> 
+        <param name="back_wheel_stop_distance" value="0.02" />
+    </node>
+    <!-- 交通控制 -->
+    <node pkg="traffic_ctr" type="traffic_ctr" name="traffic_ctr" output="screen">
+        <rosparam file="$(find traffic_ctr)/config/config4.yaml" command="load"/>
+    </node>
+
+    <!-- 环境感知部分 -->
+    <!-- 线激光雷达的轮胎定位 -->
+    <node pkg="laserscan_check" type="laserscan_check" name="laserscan_check" output="screen"/>
+    <node pkg="laserscan_check" type="laserscan_check_angle" name="laserscan_check_angle" output="screen"/>
+    <!-- <node pkg="cloud_preprocess" type="laser_radar_obs" name="laser_radar_obs" output="screen"/> -->
+
+    <!-- 激光雷达的车辆位置定位 -->
+    <node pkg="cloud_preprocess" type="cloud_location_pro" name="cloud_location_pro" output="screen">
+        <param name="lidar_work_enable" value="true"/>
+        <param name="laserscan_work_enable" value="false"/>
+    </node>
+    <node pkg="cloud_preprocess" type="savecloud" name="savecloud" output="screen">
+        <param name="save_enable" value="false"/>
+        <param name="input_topic" value="/cloud_location_pro/merge_target_cloud"/>
+        <param name="savefile_path" value="$(env HOME)/mypcd"/>
+    </node>
+
+    <!-- 障碍物检查 -->
+    <node pkg="cloud_preprocess" type="lidar_radar_obs" name="lidar_radar_obs" output="screen"/>
+
+    <!-- 传感器采集部分 -->
+    <!-- 速腾32线激光雷达 -->
+    <!-- <node pkg="rslidar_sdk" name="rslidar_sdk_node" type="rslidar_sdk_node" output="screen"/> -->
+
+    <!-- <include file="$(find rsl``````idar_sdk)/launch/start.launch"/> -->
+    <!-- 刘志调试 -->
+    <include file="$(find cloud_preprocess)/launch/oleliader.launch"/>
+
+    <!-- 线激光雷达4套 -->
+    <!-- <include file="$(find c200_lidar)/launch/c200_4.launch"/> -->
+    <include file="$(find olelidar)/launch/VF.launch"/>
+    <!-- <include file="$(find laserscan_check)/launch/run.launch"/> -->
+
+    <!-- 外侧线激光雷达 -->
+    <!-- <include file="$(find laserscan_check)/launch/run_test_new.launch"/> -->
+    
+
+    <!-- GPS接收机 -->
+    <param name="/gps_base/sim_flag" value="$(arg sim_flag)"/>
+    <include file="$(find gps)/launch/run.launch"/>
+    <!-- IMU姿态传感器 -->
+    <!-- <include file="$(find lpms_ig1)/launch/lpmsig1.launch"/> -->
+    <!-- 毫米波雷达 -->
+    <include file="$(find radar)/launch/run.launch"/>
+    <!-- CCD相机+推流RTSP -->
+    <include file="$(find camera_lbas)/launch/cap_image.launch"/>
+    <include file="$(find h264_server)/launch/run.launch"/>
+    <!-- 车辆标签识别 -->
+    <!-- <node pkg="rfid_reader" type="rfid_reader" name="rfid_reader" output="screen"/>  -->
+
+    <!-- <node pkg="cloud_preprocess" type="cloud_location_laser" name="cloud_location_laser" output="screen"/> -->
+
+
+    <node pkg="rviz" type="rviz" name="rviz_global_plan_sim" args="-d $(find global_plan_sim)/show.rviz" output="screen" respawn="true" respawn_delay="2"/>
+    <node pkg="rqt_console" type="rqt_console" name="rqt_console"/>
+</launch> 

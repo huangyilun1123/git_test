@@ -1,0 +1,10 @@
+<launch> 
+   
+    <node pkg="cloud_preprocess" type="lidar_radar_obs" name="lidar_radar_obs" output="screen">
+        <!-- <param name="slowdown_distance" value="10" /> -->
+        <!-- <param name="stop_distance" value="3" /> -->
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find cloud_preprocess)/showx.rviz"/>
+       
+</launch> 

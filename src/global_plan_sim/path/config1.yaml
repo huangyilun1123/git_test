@@ -1,0 +1,42 @@
+pick_path:
+  pose0:     # 当前位置
+    map_x: -105.55
+    map_y: 56.28
+    heading: 3.3
+    vel: 0.2
+  pose1:    # 恒速运动
+    map_x: -95.60
+    map_y: 56.78
+    heading: 3.7
+    vel: 0.2
+
+
+
+    
+release_path:
+  pose0:
+    map_x: -96.99
+    map_y: -3.1
+    heading: 92
+    vel: 0.2
+  pose1:
+    map_x: -96.79
+    map_y: -2.1
+    heading: 92
+    vel: 0.1
+
+
+
+move_path:
+  pose0:     # 当前位置
+    map_x: -118.71
+    map_y: -34.78
+    heading: 90
+    vel: 0.3
+  pose1:    # 恒速运动
+    map_x: -119.23
+    map_y: -1.19
+    heading: 95.3
+    vel: 0.2
+
+

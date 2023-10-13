@@ -1,0 +1,134 @@
+mqtt:
+  client:
+    protocol: 4 # MQTTv311
+  connection:
+    host: 128.128.2.11 #broker.emqx.io #192.168.3.119 #192.168.119.146 #localhost
+    port: 9883 #9883
+    keepalive: 10 # 表示超过该时间自动掉线,目前掉线后无法恢复,需要人工启动
+  private_path: device/001
+  account:
+    username: agvhirain
+    password: agv123456
+
+serializer: json:dumps #bixu dakai
+deserializer: json:loads #bixu dakai
+
+# agvId: abc123
+# 以下在mqtt的topic自动加入了agvId, 在bridge.py程序中,有wsk编写, 如果功力不足,请勿随便修改
+
+bridge:
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: mqtt_comm.msg:resp_agvstate
+    topic_from: /resp_agvstate #ros 发布节点
+    topic_to: hirain/yantai/agv/agvinfo/ #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: mqtt_comm.msg:resp_agvstate
+    topic_from: /resp_agvstate #ros 发布节点
+    topic_to: hirain/yantai/agv/all_agvinfo #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: nav_msgs.msg:Path
+    topic_from: /local_path_plan/taskpath #ros 发布节点
+    topic_to: hirain/yantai/agv/taskpath/ #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: mqtt_comm.msg:resp_task
+    topic_from: /resp_task #ros 发布节点
+    topic_to: hirain/yantai/agv/agvinfo/ #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: mqtt_comm.msg:resp_ctrl
+    topic_from: /resp_ctrl #ros 发布节点
+    topic_to: hirain/yantai/agv/agvinfo/ #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: mqtt_comm.msg:resp_video
+    topic_from: /resp_video #ros 发布节点
+    topic_to: hirain/yantai/agv/agvinfo/ #MQTT 订阅节点  +agvId
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: mqtt_comm.msg:controls
+    topic_from: hirain/yantai/agv/agvctrl/ #MQTT发布节点  +agvId
+    topic_to: /controls #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: mqtt_comm.msg:resp_agvstate
+    topic_from: hirain/yantai/agv/all_agvinfo
+    topic_to: /all_agvinfo #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv001
+    topic_to: /all_agv_taskpath/A0000000000agv001 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv002
+    topic_to: /all_agv_taskpath/A0000000000agv002 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv003
+    topic_to: /all_agv_taskpath/A0000000000agv003 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv004
+    topic_to: /all_agv_taskpath/A0000000000agv004 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv005
+    topic_to: /all_agv_taskpath/A0000000000agv005 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv006
+    topic_to: /all_agv_taskpath/A0000000000agv006 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv007
+    topic_to: /all_agv_taskpath/A0000000000agv007 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv008
+    topic_to: /all_agv_taskpath/A0000000000agv008 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv009
+    topic_to: /all_agv_taskpath/A0000000000agv009 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv010
+    topic_to: /all_agv_taskpath/A0000000000agv010 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv011
+    topic_to: /all_agv_taskpath/A0000000000agv011 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv012
+    topic_to: /all_agv_taskpath/A0000000000agv012 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv013
+    topic_to: /all_agv_taskpath/A0000000000agv013 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv014
+    topic_to: /all_agv_taskpath/A0000000000agv014 #ros订阅节点
+
+  - factory: mqtt_bridge.bridge:MqttToRosBridge #接收其它AGV信息
+    msg_type: nav_msgs.msg:Path
+    topic_from: hirain/yantai/agv/taskpath/A0000000000agv015
+    topic_to: /all_agv_taskpath/A0000000000agv015 #ros订阅节点
+

@@ -1,0 +1,59 @@
+pick_path:
+  pose0:
+    map_x: -93.42
+    map_y: 7.73
+    heading: 93.1
+    vel: 0.5
+  pose1: 
+    map_x: -93.42
+    map_y: 10.73
+    heading: 92.2
+    vel: 0.4
+
+release_path:
+  pose0:
+    map_x: -25.57
+    map_y: 38.58
+    heading: 92.0
+    vel: 0.5 
+  pose1:
+    map_x: -25.34
+    map_y: 30.54
+    heading: -92.4
+    vel: 2 
+  pose2:
+    map_x: -25.54
+    map_y: 12.17
+    heading: -92.4
+    vel: 2
+  pose3:
+    map_x: -15.89
+    map_y: 12.17
+    heading: -88.4
+    vel: 0.4 
+  pose4:
+    map_x: -15.65
+    map_y: -0.79
+    heading: -88.0
+    vel: 0.2
+
+move_path:
+  pose0:
+    map_x: -93.62
+    map_y: -10
+    heading: 90
+    vel: 0.5
+  pose1:
+    map_x: -93.62
+    map_y: 5.83
+    heading: 0
+    vel: 0.5 
+  pose2:
+    map_x: -83.62
+    map_y: 5.83
+    heading: 90
+    vel: 0.5 
+  
+
+
+

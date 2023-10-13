@@ -1,0 +1,7 @@
+<!-- 刘志调试 -->
+<launch> 
+    <include file="$(find rslidar_sdk)/launch/start.launch"/>
+    <node pkg="cloud_preprocess" name="cloud_filter" type="cloud_filter" output="screen"/>
+    <node pkg="cloud_preprocess" name="cloud_cluster" type="cloud_cluster" output="screen"/>
+    <!-- <node pkg="cloud_preprocess" name="check_obstacle2" type="check_obstacle200" output="screen"/> -->
+</launch> 

@@ -1,0 +1,13 @@
+<launch>
+    <!-- <rosparam file="$(find global_plan_sim)/config1.yaml" command="load"/>    -->
+    
+    <node pkg="global_plan_sim" type="local_path_plan" name="local_path_plan" output="screen">
+       <param name="leading_length" value="8"/>
+       <param name="create_selfpoint_picktask" value="true"/>
+    </node>
+
+        <node pkg="rviz" type="rviz" name="rviz_global_plan_sim" args="-d $(find global_plan_sim)/show.rviz" output="screen" respawn="true" respawn_delay="2"/>
+
+    <!-- <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui"/> -->
+</launch> 
+

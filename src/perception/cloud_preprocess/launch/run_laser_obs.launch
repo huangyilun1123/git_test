@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find laserscan_check)/launch/run_test_new.launch"/>
+    
+    <node pkg="cloud_preprocess" type="laser_radar_obs" name="laser_radar_obs" output="screen"/>
+
+    <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find laserscan_check)/show_new.rviz" output="screen" respawn="true" respawn_delay="2"/> -->
+      <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="base_target" args="8 0 0 0 0 0 base_link target_link"/> -->
+    
+</launch>

@@ -1,0 +1,6 @@
+<launch> 
+    <include file="$(find olelidar)/launch/VF.launch"/>
+    <node pkg="laserscan_check" type="laserscan_check" name="laserscan_check" output="screen"/>
+    <node pkg="laserscan_check" type="laserscan_check_angle" name="laserscan_check_angle" output="screen"/>
+    <!-- <node pkg="rviz" type="rviz" name="laserscan_check" args="-d $(find global_plan_sim)/show.rviz" output="screen" respawn="true" respawn_delay="2"/> -->
+</launch> 

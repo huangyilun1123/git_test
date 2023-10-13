@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find c200_lidar)/launch/c200_4_new.launch"/>
+    
+    <node pkg="laserscan_check" type="laserscan_check_around" name="laserscan_check_around" output="screen"/>
+
+    <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find laserscan_check)/show_new.rviz" output="screen" respawn="true" respawn_delay="2"/> -->
+    
+</launch>
